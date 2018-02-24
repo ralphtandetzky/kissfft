@@ -329,7 +329,12 @@ class kissfft
                 ) const
         {
             const cpx_type * twiddles = &_twiddles[0];
-            cpx_type scratchbuf[p];
+            std::vector<cpx_type> vector_buf;
+            constexpr std::size_t size = 128;
+            std::array<cpx_type,size> array_buf;
+            cpx_type * const scratchbuf = p <= size ?
+                  array_buf.data() :
+                  (vector_buf.resize(p), vector_buf.data() );
 
             for ( std::size_t u=0; u<m; ++u ) {
                 std::size_t k = u;
